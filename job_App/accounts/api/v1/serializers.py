@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+from accounts.models import User
 
 User = get_user_model()
 
@@ -26,3 +27,8 @@ class CompanyCreationSerializer(serializers.ModelSerializer):
         user.set_password(self.validated_data.get('password'))
         user.save()
         return user
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields='__all__'
+        model=User

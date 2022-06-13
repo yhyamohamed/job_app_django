@@ -1,12 +1,16 @@
 from django.urls import path
 from . import views
 from rest_framework.authtoken.views import obtain_auth_token
+from .views import Profiles,show
+
 
 app_name = 'Accounts-api-v1'
 urlpatterns = [
     path('login', obtain_auth_token),
     # path('developer-signup', views.signup, name='signup'),
     path('company-signup', views.company_sign_up, name='signup'),
+    path('profile-list',Profiles.as_view(), name='profile'),
+    path('<int:pk>',show.as_view()),
 ]
 
 #
