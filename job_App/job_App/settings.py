@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'profiles',
     'notifications',
     'job',
+    'rest_framework',
+    'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
