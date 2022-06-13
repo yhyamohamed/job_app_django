@@ -1,2 +1,4 @@
+.idea/
 venv/
+job_App/db.sqlite3
 __pycache__
