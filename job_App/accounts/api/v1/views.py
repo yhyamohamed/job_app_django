@@ -17,7 +17,7 @@ def company_sign_up(request):
     serializer = CompanyCreationSerializer(data=request.data)
     response = {'data': None, 'status': status.HTTP_201_CREATED}
     if serializer.is_valid():
-        # serializer.save()
+        serializer.save()
         response['data'] = serializer.data
     else:
         response['data'] = serializer.errors
