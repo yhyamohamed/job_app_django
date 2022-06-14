@@ -27,12 +27,11 @@ class DeveloperCreationSerializer(serializers.ModelSerializer):
     password_confirmation = serializers.CharField(write_only=True)
 
     class Meta:
-        fields = ('username', 'email', 'password', 'password_confirmation', 'cv', 'gender', 'user_type')
+        fields = ('username', 'email', 'password', 'password_confirmation', 'gender', 'user_type')
         model = User
         extra_kwargs = {
             'password': {'write_only': True},
             'email': {'required': True},
-            'cv': {'required': True},
             'gender': {'required': True},
             'user_type': {'required': True},
         }
