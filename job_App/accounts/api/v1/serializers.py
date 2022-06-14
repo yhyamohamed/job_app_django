@@ -47,3 +47,10 @@ def create(self, validated_data):
 
 CompanyCreationSerializer.create = create
 DeveloperCreationSerializer.create = create
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = User
+
