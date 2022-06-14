@@ -7,10 +7,8 @@ from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView,
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 
-
 from .serializers import CompanyCreationSerializer, DeveloperCreationSerializer, UserSerializer
 from ...models import User
-
 
 
 @api_view(['POST'])
@@ -44,4 +42,3 @@ class User(RetrieveAPIView):
 def delete_user(request, id):
     res = User.objects.get(pk=id).delete()
     return Response(data={'response', 'Entry deleted'}, status=status.HTTP_204_NO_CONTENT)
-
