@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view
 from job.models import Job
 from .serializers import JobSerializer, JobCreationSerializer
 
+
 @api_view(['GET'])
 def job_list(request):
     job_object = Job.objects.all()
@@ -85,3 +86,4 @@ def apply_job(request, id):
     response['data'] = {'success':'Job applied successfully'}
     response['status'] = status.HTTP_200_OK
     return Response(**response)
+

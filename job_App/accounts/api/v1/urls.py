@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from rest_framework.authtoken.views import obtain_auth_token
-from .views import profiles,show_profile,update_profile,delete_profile
+from .views import profiles, show_profile, update_profile, delete_profile, log_user_out
 
 app_name = 'Accounts-api-v1'
 urlpatterns = [
@@ -9,8 +9,9 @@ urlpatterns = [
     path('profile-list', profiles, name='profile'),
     path('profiles/<int:id>', show_profile),
     path('signup', views.sign_up, name='signup'),
-    path('profiles/edit/<int:id>',update_profile),
-    path('profiles/delete/<int:id>',delete_profile),
+    path('profiles/edit/<int:id>', update_profile),
+    path('profiles/delete/<int:id>', delete_profile),
+    path('logout', log_user_out),
 
     # path('<int:pk>/delete', views.UserDelete.as_view(), name='signup'),
 ]

@@ -1,4 +1,4 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, logout
 # from django.contrib.auth.models import  User
 from django.contrib.auth.forms import UserCreationForm
 
@@ -12,7 +12,7 @@ from rest_framework.generics import RetrieveAPIView, ListAPIView
 from .serializers import ProfileSerializer
 
 from .serializers import CompanyCreationSerializer, DeveloperCreationSerializer, UserSerializer
-
+from django.core.exceptions import ObjectDoesNotExist
 from ...models import User
 
 
@@ -54,8 +54,8 @@ def show_profile(request, id):
 
 @api_view(['PUT', 'PATCH'])
 @permission_classes([])
-def update_profile(request,id):
-    if 15==id:
+def update_profile(request, id):
+    if 15 == id:
         profile_user = User.objects.filter(pk=id).first()
         serializer = UserSerializer(instance=profile_user, data=request.data)
         if request.method == 'PATCH':
@@ -72,16 +72,22 @@ def update_profile(request,id):
     else:
         profile_user = User.objects.filter(pk=id)
         serializer = ProfileSerializer(profile_user, many=True)
-        return Response(data={'cant edit this profile'},status=status.HTTP_400_BAD_REQUEST)
-
-
+        return Response(data={'cant edit this profile'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['DELETE'])
 @permission_classes([])
-def delete_profile(request,id):
+def delete_profile(request, id):
     deleted_item = User.objects.get(pk=id).delete()
     return Response(data={'response', 'Entry deleted'}, status=status.HTTP_204_NO_CONTENT)
 
 
-#request.user.id
+@api_view(['POST'])
+def log_user_out(request):
+    try:
+        request.user.auth_token.delete()
+    except (AttributeError, ObjectDoesNotExist):
+    logout(request)
+    return Response({"success": "Successfully logged out."}, status=status.HTTP_200_OK)
+
+# request.user.id

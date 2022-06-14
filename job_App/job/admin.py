@@ -10,6 +10,7 @@ class JobAdmin(admin.ModelAdmin):
                     'created_by', 'status']
     search_fields = ['developer__username', 'created_by__username']
     list_filter = ('name', 'status')
+
     def all_tags(self, obj):
         return [tag.name for tag in obj.tags.all()]
 
