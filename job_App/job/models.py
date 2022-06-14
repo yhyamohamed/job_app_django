@@ -15,7 +15,7 @@ class Job(models.Model):
     creation_time = models.DateField(auto_now_add=True)
     modification_time = models.DateField(auto_now=True)
     description = models.TextField(max_length=255)
-    tags = models.ManyToManyField('accounts.Tag')
+    tags = models.ManyToManyField('accounts.Tag', blank=True)
     applied_developers = models.ManyToManyField('accounts.User', blank=True)
     developer = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, related_name='developer')
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_by')

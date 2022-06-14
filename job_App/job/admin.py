@@ -6,8 +6,6 @@ from .models import Job
 
 @admin.register(Job)
 class JobAdmin(admin.ModelAdmin):
-
-
     list_display = ['name', 'creation_time', 'modification_time', 'description', 'developer', 'applied_dev', 'all_tags',
                     'created_by', 'status']
 

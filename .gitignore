@@ -1,5 +1,5 @@
 .idea/
 venv/
 job_App/db.sqlite3
+/job_App/media/
 __pycache__
-.idea/

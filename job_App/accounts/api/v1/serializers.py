@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+from accounts.models import User
 
 User = get_user_model()
 
@@ -22,12 +23,11 @@ class DeveloperCreationSerializer(serializers.ModelSerializer):
     password_confirmation = serializers.CharField(write_only=True)
 
     class Meta:
-        fields = ('username', 'email', 'password', 'password_confirmation', 'cv', 'gender', 'user_type', 'is_active')
+        fields = ('username', 'email', 'password', 'password_confirmation', 'gender', 'user_type', 'is_active')
         model = User
         extra_kwargs = {
             'password': {'write_only': True},
             'email': {'required': True},
-            'cv': {'required': True},
             'gender': {'required': True},
             'user_type': {'required': True},
         }
@@ -54,4 +54,9 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         fields = '__all__'
         model = User
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields='__all__'
+        model=User
 
