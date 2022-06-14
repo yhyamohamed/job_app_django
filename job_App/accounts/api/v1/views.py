@@ -6,6 +6,9 @@ from rest_framework import status, routers, serializers, viewsets
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, DestroyAPIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
+from rest_framework.generics import RetrieveAPIView,ListAPIView
+from accounts.models  import User
+from .serializers import ProfileSerializer
 
 
 from .serializers import CompanyCreationSerializer, DeveloperCreationSerializer, UserSerializer
@@ -32,6 +35,16 @@ def sign_up(request):
         response['status'] = status.HTTP_400_BAD_REQUEST
     return Response(**response)
 
+@permission_classes([])
+class Profiles(ListAPIView):
+    queryset=User.objects.all()
+    serializer_class=ProfileSerializer
+
+
+@permission_classes([])
+class show(RetrieveAPIView):
+    queryset=User.objects.all()
+    serializer_class=ProfileSerializer
 
 @permission_classes([])
 class Users(ListAPIView):
