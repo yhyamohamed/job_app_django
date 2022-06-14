@@ -7,7 +7,7 @@ class Tag(models.Model):
 
 
 class User(AbstractUser):
-    Types = (('developer', 'developer'), ('Recruiter', 'Recruiter'))
+    Types = (('developer', 'developer'), ('recruiter', 'recruiter'))
     GENDER = (('male', 'male'), ('female', 'female'))
     user_type = models.fields.CharField(choices=Types, max_length=9, default='developer')
     allow_mail_notification = models.BooleanField(default=True)
