@@ -8,7 +8,7 @@ class CompanyCreationSerializer(serializers.ModelSerializer):
     password_confirmation = serializers.CharField(write_only=True)
 
     class Meta:
-        fields = ('username', 'email', 'password', 'password_confirmation', 'address', 'user_type')
+        fields = ('username', 'email', 'password', 'password_confirmation', 'address', 'user_type', 'is_active')
         model = User
         extra_kwargs = {
             'password': {'write_only': True},
@@ -22,7 +22,7 @@ class DeveloperCreationSerializer(serializers.ModelSerializer):
     password_confirmation = serializers.CharField(write_only=True)
 
     class Meta:
-        fields = ('username', 'email', 'password', 'password_confirmation', 'cv', 'gender', 'user_type')
+        fields = ('username', 'email', 'password', 'password_confirmation', 'cv', 'gender', 'user_type', 'is_active')
         model = User
         extra_kwargs = {
             'password': {'write_only': True},
@@ -41,6 +41,7 @@ def create(self, validated_data):
     validated_data.pop('password_confirmation')
     user = User(**validated_data)
     user.set_password(self.validated_data.get('password'))
+    user.is_active = False
     user.save()
     return user
 
