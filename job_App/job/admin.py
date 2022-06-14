@@ -8,7 +8,8 @@ from .models import Job
 class JobAdmin(admin.ModelAdmin):
     list_display = ['name', 'creation_time', 'modification_time', 'description', 'developer', 'applied_dev', 'all_tags',
                     'created_by', 'status']
-
+    search_fields = ['developer__username', 'created_by__username']
+    list_filter = ('name', 'status')
     def all_tags(self, obj):
         return [tag.name for tag in obj.tags.all()]
 

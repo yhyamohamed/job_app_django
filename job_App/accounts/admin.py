@@ -7,7 +7,7 @@ from .models import User
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     list_display = ['username', 'email', 'address', 'user_type', 'is_active', 'date_joined', 'all_tags']
-    search_fields = ['username', 'tags']
+    search_fields = ['username', 'tags__name']
 
     def get_fields(self, request, obj=None):
         fields = super(UserAdmin, self).get_fields(request, obj)
