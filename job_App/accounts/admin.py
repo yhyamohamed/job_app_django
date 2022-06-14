@@ -6,8 +6,8 @@ from .models import User
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['username', 'email', 'address', 'user_type', 'is_active', 'date_joined', 'all_tags', 'address']
-    search_fields = ['username', 'all_tags']
+    list_display = ['username', 'email', 'address', 'user_type', 'is_active', 'date_joined', 'all_tags']
+    search_fields = ['username', 'tags']
 
     def get_fields(self, request, obj=None):
         fields = super(UserAdmin, self).get_fields(request, obj)
@@ -24,6 +24,5 @@ class UserAdmin(admin.ModelAdmin):
         return fields
 
     def all_tags(self, obj):
-        print(all)
-        return "\n".join([p.name for p in obj.tags.all()])
+        return [tag.name for tag in obj.tags.all()]
 # admin.site.register(User)
