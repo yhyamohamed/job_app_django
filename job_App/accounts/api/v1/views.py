@@ -76,10 +76,11 @@ def update_profile(request,id):
 
 
 
-@permission_classes([])
+
 @api_view(['DELETE'])
-def delete_user(request, id):
-    res = User.objects.get(pk=id).delete()
+@permission_classes([])
+def delete_profile(request,id):
+    deleted_item = User.objects.get(pk=id).delete()
     return Response(data={'response', 'Entry deleted'}, status=status.HTTP_204_NO_CONTENT)
 
 
