@@ -55,3 +55,4 @@ class UserSerializer(serializers.ModelSerializer):
         fields = '__all__'
         model = User
 
+
