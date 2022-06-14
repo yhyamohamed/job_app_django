@@ -21,8 +21,8 @@ def job_create(request):
     response = {'data':{}, 'status':status.HTTP_400_BAD_REQUEST}
     _mutable = request.POST._mutable
     request.POST._mutable = True
-    request.POST['created_by'] = request.user.id
-    serializer = JobCreationSerializer(data=request.data)
+    # request.POST['created_by'] = request.user.id
+    serializer = JobCreationSerializer(context={'request': request}, data=request.data)
     print(request.data)
     if serializer.is_valid():
         serializer.save()

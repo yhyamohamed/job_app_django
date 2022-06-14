@@ -1,5 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.db.models.signals import m2m_changed
+from django.dispatch import receiver
 
 # from job_App.accounts.models import Tag, User
 from accounts.models import User, Tag
@@ -20,3 +22,10 @@ class Job(models.Model):
     developer = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, related_name='developer')
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_by')
     status = models.fields.CharField(choices=STATUS, max_length=11, default='open')
+
+
+@receiver(m2m_changed, sender=Job.tags.through)
+def send_notification_on_job_create(sender, instance, **kwargs):
+    print('test')
+    print(instance.tags)
+
