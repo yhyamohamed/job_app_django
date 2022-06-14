@@ -6,6 +6,10 @@ app_name = 'Accounts-api-v1'
 urlpatterns = [
     path('login', obtain_auth_token),
     path('signup', views.sign_up, name='signup'),
+    path('all', views.Users.as_view(), name='signup'),
+    path('<int:pk>', views.User.as_view(), name='signup'),
+    # path('<int:pk>/delete', views.UserDelete.as_view(), name='signup'),
+
 ]
 
 #
