@@ -30,5 +30,5 @@ class CompanyCreationSerializer(serializers.ModelSerializer):
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
-        fields='__all__'
-        model=User
+        fields = '__all__'
+        model = User

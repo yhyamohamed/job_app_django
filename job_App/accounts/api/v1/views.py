@@ -27,15 +27,20 @@ def company_sign_up(request):
         response['status'] = status.HTTP_400_BAD_REQUEST
     return Response(**response)
 
+
+@api_view(['GET'])
 @permission_classes([])
-class Profiles(ListAPIView):
-    queryset=User.objects.all()
-    serializer_class=ProfileSerializer
+def profiles(request):
+    profile_object=User.objects.all()
+    serializer=ProfileSerializer(profile_object,many=True)
+    return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
+@api_view(['GET'])
 @permission_classes([])
-class show(RetrieveAPIView):
-    queryset=User.objects.all()
-    serializer_class=ProfileSerializer
+def show(request,id):
+    profile_object=User.objects.filter(pk=id)
+    serializer=ProfileSerializer(profile_object,many=True)
+    return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
