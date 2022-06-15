@@ -1,7 +1,8 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, logout
 # from django.contrib.auth.models import  User
 from django.contrib.auth.forms import UserCreationForm
-
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
 from django.views.generic import CreateView
 from rest_framework import status, routers, serializers, viewsets
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, DestroyAPIView
@@ -12,7 +13,7 @@ from rest_framework.generics import RetrieveAPIView, ListAPIView
 from .serializers import ProfileSerializer
 
 from .serializers import CompanyCreationSerializer, DeveloperCreationSerializer, UserSerializer
-
+from django.core.exceptions import ObjectDoesNotExist
 from ...models import User
 
 
@@ -36,6 +37,17 @@ def sign_up(request):
     return Response(**response)
 
 
+
+
+class LogUserIn(ObtainAuthToken):
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({'token': token.key, 'id': user.id})
+
+
 @api_view(['GET'])
 @permission_classes([])
 def profiles(request):
@@ -54,8 +66,8 @@ def show_profile(request, id):
 
 @api_view(['PUT', 'PATCH'])
 @permission_classes([])
-def update_profile(request,id):
-    if 15==id:
+def update_profile(request, id):
+    if 15 == id:
         profile_user = User.objects.filter(pk=id).first()
         serializer = UserSerializer(instance=profile_user, data=request.data)
         if request.method == 'PATCH':
@@ -72,16 +84,23 @@ def update_profile(request,id):
     else:
         profile_user = User.objects.filter(pk=id)
         serializer = ProfileSerializer(profile_user, many=True)
-        return Response(data={'cant edit this profile'},status=status.HTTP_400_BAD_REQUEST)
-
-
+        return Response(data={'cant edit this profile'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['DELETE'])
 @permission_classes([])
-def delete_profile(request,id):
+def delete_profile(request, id):
     deleted_item = User.objects.get(pk=id).delete()
     return Response(data={'response', 'Entry deleted'}, status=status.HTTP_204_NO_CONTENT)
 
 
-#request.user.id
+@api_view(['POST'])
+def log_user_out(request):
+    try:
+        request.user.auth_token.delete()
+    except (AttributeError, ObjectDoesNotExist):
+        pass
+    logout(request)
+    return Response({"success": "Successfully logged out."}, status=status.HTTP_200_OK)
+
+# request.user.id
