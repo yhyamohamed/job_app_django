@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import job_list, job_details, job_create, job_edit, job_delete, accept_developer, apply_job
+from .views import job_list, job_details, job_create, job_edit, job_delete, accept_developer, apply_job, finish_job
 
 app_name = 'job-rest-v1'
 urlpatterns = [
@@ -10,4 +10,5 @@ urlpatterns = [
     path('<int:id>/delete', job_delete, name='delete'),
     path('<int:id>/accept-developer', accept_developer, name='accept_developer'),
     path('<int:id>/apply', apply_job, name='apply_job'),
+    path('<int:id>/finish', finish_job, name='finish_job'),
 ]
