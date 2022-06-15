@@ -26,9 +26,6 @@ def job_create(request):
     if request.user.user_type == 'developer':
         response['data'] = {'message':'You are not authorized to create job'}
     else:
-        _mutable = request.POST._mutable
-        request.POST._mutable = True
-        # request.POST['created_by'] = request.user.id
         serializer = JobCreationSerializer(context={'request': request}, data=request.data)
         print(request.data)
         if serializer.is_valid():
