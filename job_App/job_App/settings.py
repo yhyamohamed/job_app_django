@@ -139,3 +139,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES':
         ['rest_framework.permissions.IsAuthenticated']
 }
+
+EMAIL_HOST = 'smtp.mailtrap.io'
+EMAIL_HOST_USER = '8628044879c8bf'
+EMAIL_HOST_PASSWORD = 'cc43974407c686'
+EMAIL_PORT = '2525'

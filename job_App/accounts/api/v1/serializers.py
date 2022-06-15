@@ -23,13 +23,14 @@ class DeveloperCreationSerializer(serializers.ModelSerializer):
     password_confirmation = serializers.CharField(write_only=True)
 
     class Meta:
-        fields = ('username', 'email', 'password', 'password_confirmation', 'gender', 'user_type', 'is_active')
+        fields = ('username', 'email', 'password', 'password_confirmation', 'gender', 'user_type', 'is_active', 'tags')
         model = User
         extra_kwargs = {
             'password': {'write_only': True},
             'email': {'required': True},
             'gender': {'required': True},
             'user_type': {'required': True},
+            'tags': {'required': True}
         }
 
 
@@ -39,10 +40,14 @@ def create(self, validated_data):
 
     validated_data.pop('password')
     validated_data.pop('password_confirmation')
+    if 'tags' in validated_data:
+        tags = validated_data.pop('tags')
     user = User(**validated_data)
     user.set_password(self.validated_data.get('password'))
     user.is_active = False
     user.save()
+    if 'tags' in locals():
+        user.tags.set(tags)
     return user
 
 

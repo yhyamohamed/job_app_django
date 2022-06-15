@@ -2,6 +2,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from job.models import Job
+from accounts.models import User
 from .serializers import JobSerializer, JobCreationSerializer
 
 
@@ -24,8 +25,8 @@ def job_create(request):
     response = {'data': {}, 'status': status.HTTP_400_BAD_REQUEST}
     _mutable = request.POST._mutable
     request.POST._mutable = True
-    request.POST['created_by'] = request.user.id
-    serializer = JobCreationSerializer(data=request.data)
+    # request.POST['created_by'] = request.user.id
+    serializer = JobCreationSerializer(context={'request': request}, data=request.data)
     print(request.data)
     if serializer.is_valid():
         serializer.save()
@@ -60,9 +61,9 @@ def job_edit(request, id):
 def job_delete(request, id):
     response = {'data': {}, 'status': status.HTTP_400_BAD_REQUEST}
     job = Job.objects.get(pk=id)
+
     if job.created_by.id != request.user.id and job.status != "open":
         response['data'] = {'error': 'You are not authorized to delete this job or job already open'}
-
     else:
         job.delete()
         response['data'] = {'success': 'Job deleted successfully'}
@@ -77,9 +78,9 @@ def accept_developer(request, id):
     if job.created_by.id != request.user.id:
         response['data'] = {'error': 'You are not authorized to edit this job'}
     else:
-        job.developer = request.developer
+        job.developer = User.objects.get(pk=request.data['developer_id'])
         job.status = 'in_progress'
-        job.save()
+        job.save(update_fields=['developer_id'])
         response['data'] = {'success': 'Developer accepted successfully'}
         response['status'] = status.HTTP_200_OK
     return Response(**response)
@@ -93,3 +94,19 @@ def apply_job(request, id):
     response['data'] = {'success': 'Job applied successfully'}
     response['status'] = status.HTTP_200_OK
     return Response(**response)
+
+
+
+@api_view(['POST'])
+def finish_job(request, id):
+    response = {'data': {}, 'status': status.HTTP_400_BAD_REQUEST}
+    job = Job.objects.get(pk=id)
+    if job.developer == request.user:
+        job.status = 'ﬁnished'
+        job.save(update_fields=['status'])
+        response['data'] = {'success': 'Job finished successfully'}
+        response['status'] = status.HTTP_200_OK
+    else:
+        response['data'] = {'message': 'Unauthorized'}
+    return Response(**response)
+
