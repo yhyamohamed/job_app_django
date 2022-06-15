@@ -44,7 +44,9 @@ def create(self, validated_data):
         tags = validated_data.pop('tags')
     user = User(**validated_data)
     user.set_password(self.validated_data.get('password'))
-    user.is_active = False
+    type = self.validated_data.get('user_type')
+    if type == 'recruiter':
+        user.is_active = False
     user.save()
     if 'tags' in locals():
         user.tags.set(tags)
@@ -60,8 +62,8 @@ class UserSerializer(serializers.ModelSerializer):
         fields = '__all__'
         model = User
 
+
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
-        fields='__all__'
-        model=User
-
+        fields = '__all__'
+        model = User
