@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models.signals import m2m_changed
 from django.dispatch import receiver
@@ -26,6 +27,9 @@ class Job(models.Model):
 
 @receiver(m2m_changed, sender=Job.tags.through)
 def send_notification_on_job_create(sender, instance, **kwargs):
-    print('test')
-    print(instance.tags)
+    if kwargs.get('action') == 'post_add' and ContentType.objects.get_for_model(sender).name == 'job-tag relationship':
+        tags = instance.tags.all()
+        users = User.objects.filter(tags__in=tags)
+        for user in users:
+            print(user.email)
 
