@@ -6,14 +6,10 @@ class JobSerializer(serializers.ModelSerializer):
     class Meta:
         fields = '__all__'
         model = Job
+        depth=1
 
 
 class JobCreationSerializer(serializers.ModelSerializer):
-
-    # created_by = serializers.HiddenField(
-    #     default = serializers.CurrentUserDefault(),
-    # )
-
     class Meta:
         fields = 'name', 'description', 'created_by'
         model = Job
