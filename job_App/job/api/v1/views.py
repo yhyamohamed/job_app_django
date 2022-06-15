@@ -61,8 +61,9 @@ def job_edit(request, id):
 def job_delete(request, id):
     response = {'data': {}, 'status': status.HTTP_400_BAD_REQUEST}
     job = Job.objects.get(pk=id)
-    if job.created_by.id != request.user.id:
-        response['data'] = {'error': 'You are not authorized to edit this job'}
+
+    if job.created_by.id != request.user.id and job.status != "open":
+        response['data'] = {'error': 'You are not authorized to delete this job or job already open'}
     else:
         job.delete()
         response['data'] = {'success': 'Job deleted successfully'}
@@ -93,6 +94,7 @@ def apply_job(request, id):
     response['data'] = {'success': 'Job applied successfully'}
     response['status'] = status.HTTP_200_OK
     return Response(**response)
+
 
 
 @api_view(['POST'])
