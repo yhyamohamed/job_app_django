@@ -40,12 +40,14 @@ def create(self, validated_data):
 
     validated_data.pop('password')
     validated_data.pop('password_confirmation')
-    tags = validated_data.pop('tags')
+    if 'tags' in validated_data:
+        tags = validated_data.pop('tags')
     user = User(**validated_data)
     user.set_password(self.validated_data.get('password'))
     user.is_active = False
     user.save()
-    user.tags.set(tags)
+    if 'tags' in locals():
+        user.tags.set(tags)
     return user
 
 
