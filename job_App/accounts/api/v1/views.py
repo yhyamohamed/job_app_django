@@ -67,7 +67,7 @@ def show_profile(request, id):
 @api_view(['PUT', 'PATCH'])
 @permission_classes([])
 def update_profile(request, id):
-    if 7 == id:
+    if request.user.id == id:
         profile_user = User.objects.filter(pk=id).first()
         serializer = UserSerializer(instance=profile_user, data=request.data)
         if request.method == 'PATCH':

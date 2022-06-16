@@ -28,7 +28,7 @@ class Job(models.Model):
     status = models.fields.CharField(choices=STATUS, max_length=11, default='open')
 
 
-@receiver(m2m_changed, sender=Job.tags.through)
+# @receiver(m2m_changed, sender=Job.tags.through)
 def send_notification_on_job_create(sender, instance, **kwargs):
     if kwargs.get('action') == 'post_add' and ContentType.objects.get_for_model(sender).name == 'job-tag relationship':
         tags = instance.tags.all()

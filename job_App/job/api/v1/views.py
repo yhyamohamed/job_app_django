@@ -100,12 +100,12 @@ def apply_job(request, id):
 def finish_job(request, id):
     response = {'data': {}, 'status': status.HTTP_400_BAD_REQUEST}
     job = Job.objects.get(pk=id)
-    if job.developer == request.user:
+    if job.developer == request.user or job.created_by == request.user:
         job.status = 'ﬁnished'
         job.save(update_fields=['status'])
         response['data'] = {'success': 'Job finished successfully'}
         response['status'] = status.HTTP_200_OK
     else:
-        response['data'] = {'message': 'Unauthorized'}
+        response['data'] = {'message': 'you are not authrized'}
     return Response(**response)
 
