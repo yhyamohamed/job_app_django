@@ -7,7 +7,6 @@ from .serializers import JobSerializer, JobCreationSerializer
 
 
 @api_view(['GET'])
-@permission_classes([])
 def job_list(request):
     job_object = Job.objects.all()
     serializer = JobSerializer(job_object, many=True)
