@@ -23,17 +23,17 @@ def job_details(request, id):
 @api_view(['POST'])
 def job_create(request):
     response = {'data': {}, 'status': status.HTTP_400_BAD_REQUEST}
-    _mutable = request.POST._mutable
-    request.POST._mutable = True
-    # request.POST['created_by'] = request.user.id
-    serializer = JobCreationSerializer(context={'request': request}, data=request.data)
-    print(request.data)
-    if serializer.is_valid():
-        serializer.save()
-        response['data'] = serializer.data
-        response['status'] = status.HTTP_201_CREATED
+    if request.user.user_type == 'developer':
+        response['data'] = {'message':'You are not authorized to create job'}
     else:
-        response['data'] = serializer.errors
+        serializer = JobCreationSerializer(context={'request': request}, data=request.data)
+        print(request.data)
+        if serializer.is_valid():
+            serializer.save()
+            response['data'] = serializer.data
+            response['status'] = status.HTTP_201_CREATED
+        else:
+            response['data'] = serializer.errors
     return Response(**response)
 
 
@@ -75,8 +75,8 @@ def job_delete(request, id):
 def accept_developer(request, id):
     response = {'data': {}, 'status': status.HTTP_400_BAD_REQUEST}
     job = Job.objects.get(pk=id)
-    if job.created_by.id != request.user.id:
-        response['data'] = {'error': 'You are not authorized to edit this job'}
+    if job.created_by.id != request.user.id and job.status != "open":
+        response['data'] = {'error': 'You are not authorized to edit this job or job already open'}
     else:
         job.developer = User.objects.get(pk=request.data['developer_id'])
         job.status = 'in_progress'
@@ -94,7 +94,6 @@ def apply_job(request, id):
     response['data'] = {'success': 'Job applied successfully'}
     response['status'] = status.HTTP_200_OK
     return Response(**response)
-
 
 
 @api_view(['POST'])

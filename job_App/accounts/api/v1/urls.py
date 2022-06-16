@@ -19,11 +19,12 @@ urlpatterns = [
 
 #
 # {
-#     "username": "yaya",
+#     "username": "yaya2",
 #     "email": "yaya@iti.com",
 #     "password": "yaya1234",
 #     "password_confirmation":"yaya1234",
 #     "address": "some where st"
+#     "user_type": "recruiter"
 # }
 
 # {
