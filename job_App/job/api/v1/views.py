@@ -1,12 +1,13 @@
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from job.models import Job
 from accounts.models import User
 from .serializers import JobSerializer, JobCreationSerializer
 
 
 @api_view(['GET'])
+@permission_classes([])
 def job_list(request):
     job_object = Job.objects.all()
     serializer = JobSerializer(job_object, many=True)
