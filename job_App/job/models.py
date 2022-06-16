@@ -28,7 +28,7 @@ class Job(models.Model):
     status = models.fields.CharField(choices=STATUS, max_length=11, default='open')
 
 
-# @receiver(m2m_changed, sender=Job.tags.through)
+@receiver(m2m_changed, sender=Job.tags.through)
 def send_notification_on_job_create(sender, instance, **kwargs):
     if kwargs.get('action') == 'post_add' and ContentType.objects.get_for_model(sender).name == 'job-tag relationship':
         tags = instance.tags.all()
@@ -60,7 +60,7 @@ def send_notification_on_job_accept(sender, instance, update_fields, **kwargs):
 
         elif list(update_fields)[0] == 'status':
             job_owner = User.objects.get(pk=instance.created_by_id)
-            print(job_owner.mail)
-            send_mail('Job has been posted', 'New Job!', 'admin@admin.com', [job_owner.mail], fail_silently=False)
+            print(job_owner.email)
+            send_mail('Job has been posted', 'New Job!', 'admin@admin.com', [job_owner.email], fail_silently=False)
             notification = Notification(name=instance.name + " - Job Finish Notification", sent_to=job_owner)
             notification.save()
