@@ -14,6 +14,7 @@ urlpatterns = [
     path('profiles/delete/<int:id>', delete_profile),
     path('tags',list_tags),
     path('logout', log_user_out),
+    path('check-token', views.get_user_from_token)
 
     # path('<int:pk>/delete', views.UserDelete.as_view(), name='signup'),
 ]

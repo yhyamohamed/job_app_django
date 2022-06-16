@@ -45,7 +45,14 @@ class LogUserIn(ObtainAuthToken):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
-        return Response({'token': token.key, 'id': user.id})
+        return Response({'token': token.key, 'id': user.id, 'user_type': user.user_type, 'username': user.username})
+
+
+@api_view(['POST'])
+@permission_classes([])
+def get_user_from_token(request):
+    user = Token.objects.get(key=request.data['token']).user
+    return Response({'id': user.id, 'user_type': user.user_type, 'username': user.username})
 
 
 @api_view(['GET'])

@@ -9,10 +9,10 @@ from .models import User
 def my_handler(sender, **kwargs):
     user = kwargs.get('instance')
     if user.user_type == 'recruiter':
-        send_mail('new recruiter has beenn added ')
+        # send_mail('new recruiter has beenn added ')
         send_mail(
             'new recruiter has been added ',  # subject
             user.email + ' has been created ',  # message
             'system@admin.com',  # from
-            'admin@admin.com',  # to
+            ['admin@admin.com'],  # to
         )
