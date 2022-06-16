@@ -92,10 +92,18 @@ def accept_developer(request, id):
 @api_view(['POST'])
 def apply_job(request, id):
     response = {'data': {}, 'status': status.HTTP_400_BAD_REQUEST}
-    job = Job.objects.get(pk=id)
-    job.applied_developers.add(request.user.id)
-    response['data'] = {'success': 'Job applied successfully'}
-    response['status'] = status.HTTP_200_OK
+    if request.user.user_type == 'recruiter':
+        response['data'] = {'message':'You are not authorized to apply for job'}
+    else:
+        job = Job.objects.get(pk=id)
+        jobs = Job.objects.all()
+        all_developer_applied = jobs.filter(applied_developers__id=request.user.id)
+        if not all_developer_applied:
+            job.applied_developers.add(request.user.id)
+            response['data'] = {'success': 'Developer applied successfully'}
+            response['status'] = status.HTTP_200_OK
+        else:
+            response['data'] = {'Error': 'Developer already applied for a job'}
     return Response(**response)
 
 
