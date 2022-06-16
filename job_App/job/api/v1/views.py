@@ -1,12 +1,13 @@
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from job.models import Job
 from accounts.models import User
 from .serializers import JobSerializer, JobCreationSerializer
 
 
 @api_view(['GET'])
+@permission_classes([])
 def job_list(request):
     job_object = Job.objects.all()
     serializer = JobSerializer(job_object, many=True)
@@ -75,8 +76,11 @@ def job_delete(request, id):
 def accept_developer(request, id):
     response = {'data': {}, 'status': status.HTTP_400_BAD_REQUEST}
     job = Job.objects.get(pk=id)
+    developer_applied = job.applied_developers.filter(pk=request.data['developer_id'])
     if job.created_by.id != request.user.id and job.status != "open":
         response['data'] = {'error': 'You are not authorized to edit this job or job already open'}
+    elif not developer_applied:
+        response['data'] = {'Error': 'Developer didnot apply for this job'}
     else:
         job.developer = User.objects.get(pk=request.data['developer_id'])
         job.status = 'in_progress'
