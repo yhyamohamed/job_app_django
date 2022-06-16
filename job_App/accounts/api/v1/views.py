@@ -12,9 +12,9 @@ from rest_framework.generics import RetrieveAPIView, ListAPIView
 
 from .serializers import ProfileSerializer
 
-from .serializers import CompanyCreationSerializer, DeveloperCreationSerializer, UserSerializer
+from .serializers import CompanyCreationSerializer, DeveloperCreationSerializer, UserSerializer, TagSerializer
 from django.core.exceptions import ObjectDoesNotExist
-from ...models import User
+from ...models import User,Tag
 
 
 @api_view(['POST'])
@@ -93,6 +93,12 @@ def delete_profile(request, id):
     deleted_item = User.objects.get(pk=id).delete()
     return Response(data={'response', 'Entry deleted'}, status=status.HTTP_204_NO_CONTENT)
 
+@api_view(['GET'])
+@permission_classes([])
+def list_tags(request):
+    tag_object = Tag.objects.all()
+    serializer = TagSerializer(tag_object, many=True)
+    return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 def log_user_out(request):
