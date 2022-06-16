@@ -47,6 +47,8 @@ def create(self, validated_data):
     type = self.validated_data.get('user_type')
     if type == 'recruiter':
         user.is_active = False
+    elif type == 'developer':
+        user.is_active = True
     user.save()
     if 'tags' in locals():
         user.tags.set(tags)

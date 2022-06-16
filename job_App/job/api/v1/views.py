@@ -41,8 +41,8 @@ def job_create(request):
 def job_edit(request, id):
     response = {'data': {}, 'status': status.HTTP_400_BAD_REQUEST}
     job = Job.objects.get(pk=id)
-    if job.created_by.id != request.user.id:
-        response['data'] = {'error': 'You are not authorized to edit this job'}
+    if job.created_by.id != request.user.id and job.status != "open":
+        response['data'] = {'error': 'You are not authorized to edit this job or job already open'}
     else:
         if request.method == 'PUT':
             serializer = JobSerializer(instance=job, data=request.data)
