@@ -5,7 +5,7 @@ from django.db.models.signals import m2m_changed, post_save
 from django.dispatch import receiver
 
 # from job_App.accounts.models import Tag, User
-from accounts.models import User, Tag
+from accounts.models import User,Tag
 from django.core.mail import send_mail
 
 
