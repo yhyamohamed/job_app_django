@@ -3,5 +3,5 @@ from .views import notification_list
 
 app_name = 'Notifications-api-v1'
 urlpatterns = [
-    path('notification/<int:id>', notification_list)
+    path('notification', notification_list)
 ]

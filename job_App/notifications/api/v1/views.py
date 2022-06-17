@@ -6,9 +6,7 @@ from ...models import Notification
 
 
 @api_view(['GET'])
-def notification_list(request, id):
-    notifications_object = Notification.objects.all()
-    print(notifications_object)
+def notification_list(request):
+    notifications_object = Notification.objects.filter(sent_to=request.user.id)
     serializer = NotificationSerializer(notifications_object, many=True)
-
     return Response(data=serializer.data, status=status.HTTP_200_OK)
