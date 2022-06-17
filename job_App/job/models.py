@@ -32,7 +32,7 @@ class Job(models.Model):
 def send_notification_on_job_create(sender, instance, **kwargs):
     if kwargs.get('action') == 'post_add' and ContentType.objects.get_for_model(sender).name == 'job-tag relationship':
         tags = instance.tags.all()
-        users = User.objects.filter(tags__in=tags).distinct()
+        users = User.objects.filter(tags__in=tags,allow_mail_notification=True).distinct()
         for user in users:
             print(user.email)
             send_mail('New Job Has Been Posted', 'New Job!', 'admin@admin.com', [user.email], fail_silently=False)
