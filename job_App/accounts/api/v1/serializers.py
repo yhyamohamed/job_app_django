@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from accounts.models import User,Tag
+from accounts.models import User, Tag
 
 User = get_user_model()
 
@@ -59,10 +59,18 @@ CompanyCreationSerializer.create = create
 DeveloperCreationSerializer.create = create
 
 
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = Tag
+
+
 class UserSerializer(serializers.ModelSerializer):
+    tags = TagSerializer(many=True)
+
     class Meta:
         # fields = '__all__'
-        exclude=['password']
+        exclude = ['password']
         model = User
 
 
@@ -71,9 +79,3 @@ class ProfileSerializer(serializers.ModelSerializer):
         # fields = '__all__'
         exclude = ['password']
         model = User
-
-
-class TagSerializer(serializers.ModelSerializer):
-    class Meta:
-        fields = '__all__'
-        model = Tag
