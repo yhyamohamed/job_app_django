@@ -45,9 +45,9 @@ def job_edit(request, id):
         response['data'] = {'error': 'You are not authorized to edit this job or job already open'}
     else:
         if request.method == 'PUT':
-            serializer = JobSerializer(instance=job, data=request.data)
+            serializer = JobCreationSerializer(instance=job, data=request.data)
         else:
-            serializer = JobSerializer(instance=job, data=request.data, partial=True)
+            serializer = JobCreationSerializer(instance=job, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             response['data'] = serializer.data
