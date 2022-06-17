@@ -83,7 +83,7 @@ def accept_developer(request, id):
     else:
         job.developer = User.objects.get(pk=request.data['developer_id'])
         job.status = 'in_progress'
-        job.save(update_fields=['developer_id'])
+        job.save(update_fields=['developer_id', 'status'])
         response['data'] = {'success': 'Developer accepted successfully'}
         response['status'] = status.HTTP_200_OK
     return Response(**response)
