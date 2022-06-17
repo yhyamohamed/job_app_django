@@ -79,3 +79,4 @@ class ProfileSerializer(serializers.ModelSerializer):
         # fields = '__all__'
         exclude = ['password']
         model = User
+        depth = 1

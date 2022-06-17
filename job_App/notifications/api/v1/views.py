@@ -6,7 +6,6 @@ from ...models import Notification
 
 
 @api_view(['GET'])
-@permission_classes([])
 def notification_list(request, id):
     notifications_object = Notification.objects.all()
     print(notifications_object)
