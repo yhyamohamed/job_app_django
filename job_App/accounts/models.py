@@ -17,7 +17,7 @@ class User(AbstractUser):
     gender = models.fields.CharField(choices=GENDER, max_length=6, default='male')
     date_of_birth = models.fields.DateTimeField(verbose_name='BD', null=True, blank=True)
     tags = models.ManyToManyField('Tag', blank=True)
-    cv = models.FileField(upload_to='cvs/%Y')
+    cv = models.FileField(upload_to='cvs/%Y', blank=True, null=True)
     address = models.TextField(max_length=150)
 
 

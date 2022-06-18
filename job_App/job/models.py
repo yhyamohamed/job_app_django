@@ -61,6 +61,6 @@ def send_notification_on_job_accept(sender, instance, update_fields, **kwargs):
         elif list(update_fields)[0] == 'status':
             job_owner = User.objects.get(pk=instance.created_by_id)
             print(job_owner.email)
-            send_mail('Job has been posted', 'New Job!', 'admin@admin.com', [job_owner.email], fail_silently=False)
+            send_mail('Job has been finished.', 'New Job!', 'admin@admin.com', [job_owner.email], fail_silently=False)
             notification = Notification(name=instance.name + " - Job Finish Notification", sent_to=job_owner)
             notification.save()
