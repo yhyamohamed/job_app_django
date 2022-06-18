@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.generics import RetrieveAPIView, ListAPIView
 
-from .serializers import ProfileSerializer
+from .serializers import ProfileSerializer,  UserUpdateSerializer
 
 from .serializers import CompanyCreationSerializer, DeveloperCreationSerializer, UserSerializer, TagSerializer
 from django.core.exceptions import ObjectDoesNotExist
@@ -72,14 +72,14 @@ def show_profile(request, id):
 
 
 @api_view(['PUT', 'PATCH'])
-@permission_classes([])
 def update_profile(request, id):
     if request.user.id == id:
         profile_user = User.objects.filter(pk=id).first()
-        serializer = UserSerializer(instance=profile_user, data=request.data)
-        if request.method == 'PATCH':
-            serializer = UserSerializer(instance=profile_user, data=request.data, partial=True)
         response = {'data': None, 'status': status.HTTP_201_CREATED}
+
+        if request.method == 'PATCH' or request.method == 'PUT' :
+            serializer = UserUpdateSerializer(instance=profile_user,data=request.data, partial=True)
+
         if serializer.is_valid():
             serializer.save()
             response['data'] = serializer.data

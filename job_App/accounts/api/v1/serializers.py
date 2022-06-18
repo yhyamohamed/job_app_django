@@ -65,6 +65,14 @@ class TagSerializer(serializers.ModelSerializer):
         model = Tag
 
 
+class UserUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = User
+
+
+
+
 class UserSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True)
 
